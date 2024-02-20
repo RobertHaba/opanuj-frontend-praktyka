@@ -7,6 +7,10 @@ import {
   isNumber,
 } from '../utils/validation/validationRules.ts';
 
+enum Limit {
+  MaxQuantity = 100,
+}
+
 function validator() {
   const inputQuantity = document.getElementById(
     'input-quantity'
@@ -34,7 +38,7 @@ function validator() {
         { rule: required },
         { rule: isEven },
         { rule: isGreaterThan },
-        { rule: isLessThan, options: { limit: 100 } },
+        { rule: isLessThan, options: { limit: Limit.MaxQuantity } },
       ],
     });
   };
