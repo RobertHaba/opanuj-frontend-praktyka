@@ -1,5 +1,7 @@
 export const required = (value: any) => !!value;
 
+// Validation - Numbers
+
 export const isNumber = (value: any) => typeof value === 'number';
 
 export const isLessThan = (value: number, { limit = 20 } = {}) => value < limit;
