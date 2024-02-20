@@ -28,7 +28,7 @@ function validator() {
 
   const validateInputQuantity = () => {
     return validateWithInfo({
-      value: +inputQuantity.value,
+      value: Number(inputQuantity.value),
       rules: [
         { rule: isNumber },
         { rule: required },
