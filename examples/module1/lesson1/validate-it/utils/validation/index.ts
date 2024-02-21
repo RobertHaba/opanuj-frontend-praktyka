@@ -4,7 +4,7 @@ const TRANSLATION = {
 };
 
 interface Validate {
-  value: number | string | boolean | undefined;
+  value: any;
   rules: { rule: Function; options?: object }[];
 }
 
