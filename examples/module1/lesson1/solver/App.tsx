@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { f1, f2, f3, f4 } from './functions';
+import BaseButton from './components/ui/button/BaseButton';
 
 const App = () => {
   const [numA, setNumA] = useState<number>(0);
@@ -27,30 +28,10 @@ const App = () => {
         />
       </div>
       <div className="grid grid-cols-4 gap-x-4 my-4">
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f1)}
-        >
-          +
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f2)}
-        >
-          -
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f3)}
-        >
-          *
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f4)}
-        >
-          /
-        </button>
+        <BaseButton onClick={() => doWork(f1)}>+</BaseButton>
+        <BaseButton onClick={() => doWork(f2)}>-</BaseButton>
+        <BaseButton onClick={() => doWork(f3)}>*</BaseButton>
+        <BaseButton onClick={() => doWork(f4)}>/</BaseButton>
       </div>
       <div>Result: {numC}</div>
     </div>
