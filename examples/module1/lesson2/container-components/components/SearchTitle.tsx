@@ -1,5 +1,5 @@
-function SearchTitle() {
-  return <h1 className="text-2xl">Wyszukiwarka postaci Rick and Morty</h1>;
+function SearchTitle({ text }: { text: string }) {
+  return <h1 className="text-2xl">{text}</h1>;
 }
 
 export default SearchTitle;
