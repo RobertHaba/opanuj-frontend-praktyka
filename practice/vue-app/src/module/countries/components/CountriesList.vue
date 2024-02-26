@@ -12,11 +12,7 @@ defineProps<Props>();
 <template>
   <ul class="flex flex-col gap-4" v-if="countries.length">
     <li v-for="country in countries" :key="country.name.common">
-      <CountriesCard
-        :name="country.name.common"
-        :flag="country.flags"
-        :population="country.population"
-      />
+      <CountriesCard :country="country" />
     </li>
   </ul>
 </template>
