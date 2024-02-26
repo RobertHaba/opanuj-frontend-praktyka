@@ -9,7 +9,7 @@ import CountriesList from './CountriesList.vue';
 import CountriesSortSelect from './form/CountriesSortSelect.vue';
 import AHeaderForm from '@/components/ui/header/AHeaderForm.vue';
 
-const { countries, filter, searchCountries } = useSearch();
+const { countries, filter, searchCountries, loading } = useSearch();
 
 const { sortOption, sortedCountries } = useSort(countries);
 </script>
@@ -31,6 +31,6 @@ const { sortOption, sortedCountries } = useSort(countries);
       <CountriesSortSelect v-model="sortOption" />
     </AHeaderForm>
 
-    <CountriesList :countries="sortedCountries" />
+    <CountriesList :countries="sortedCountries" :loading="loading.default" />
   </div>
 </template>

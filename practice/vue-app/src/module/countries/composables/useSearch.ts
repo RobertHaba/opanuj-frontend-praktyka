@@ -4,10 +4,12 @@ import CountriesService, { Filter } from '../services/CountriesService';
 
 export default function useSearch() {
   const countries = ref<Country[]>([]);
+  const loading = reactive({ default: false });
 
   const filter = reactive<Filter>({ value: '', type: FilterType.All });
 
   const searchCountries = async () => {
+    loading.default = true;
     if (!filter.value) filter.type = FilterType.All;
 
     const { data } = await CountriesService.fetch({
@@ -15,6 +17,7 @@ export default function useSearch() {
     });
 
     countries.value = data;
+    loading.default = false;
   };
 
   const trySetFilterTypeAsName = () => {
@@ -29,5 +32,5 @@ export default function useSearch() {
     }
   );
 
-  return { countries, searchCountries, filter };
+  return { countries, searchCountries, filter, loading };
 }
