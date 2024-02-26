@@ -2,7 +2,7 @@ export enum FilterType {
   All = 'all',
   Name = 'name',
   Currency = 'currency',
-  Language = 'language',
+  Language = 'lang',
   Capital = 'capital',
 }
 
@@ -18,4 +18,5 @@ export interface Country {
   name: { common: string };
   flags: { alt: string; svg: string };
   population: number;
+  capital?: string[];
 }
