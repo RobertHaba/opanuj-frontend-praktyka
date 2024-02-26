@@ -16,8 +16,7 @@ const { sortOption, sortedCountries } = useSort(countries);
 <template>
   <div class="flex flex-col gap-8 p-4">
     <AHeaderForm>
-      <form class="flex gap-2">
-        @submit.prevent="searchCountries">
+      <form class="flex gap-2" @submit.prevent="searchCountries">
         <CountriesFilterSelect v-model="filter.type" />
         <AInput class="w-full" v-model="filter.value" />
         <AButton @click="searchCountries" label="Search" />
