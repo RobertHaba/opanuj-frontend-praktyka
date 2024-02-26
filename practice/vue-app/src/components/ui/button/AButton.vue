@@ -12,5 +12,3 @@ withDefaults(defineProps<Props>(), { type: 'button' });
     {{ label }}
   </button>
 </template>
-
-<style lang="scss" scoped></style>

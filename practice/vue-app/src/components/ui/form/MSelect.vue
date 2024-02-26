@@ -17,5 +17,3 @@ const value = defineModel();
     </option>
   </select>
 </template>
-
-<style lang="scss" scoped></style>

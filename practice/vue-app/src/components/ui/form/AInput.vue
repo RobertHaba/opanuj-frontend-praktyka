@@ -8,5 +8,3 @@ const value = defineModel();
     class="bg-zinc-800 h-10 px-4 border border-zinc-600 rounded-lg text-white"
   />
 </template>
-
-<style lang="scss" scoped></style>
