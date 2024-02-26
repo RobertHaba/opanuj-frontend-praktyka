@@ -1,14 +1,17 @@
-import { computed, ref } from 'vue';
-import { SortOption } from '../types/Countries';
+import { Ref, computed, ref } from 'vue';
+import { Country, SortOption } from '../types/Countries';
 
-export default function useSort(countries) {
+export default function useSort(countries: Ref<Country[]>) {
   const { NameAsc, NameDesc, PopulationAsc, PopulationDesc } = SortOption;
 
   const sortOption = ref(SortOption.NameAsc);
 
   const sortedCountries = computed(() => {
-    const sortName = (a, b) => a.name.common.localeCompare(b.name.common);
-    const sortPopulation = (a, b) => a.population - b.population;
+    const sortName = (a: Country, b: Country) =>
+      a.name.common.localeCompare(b.name.common);
+
+    const sortPopulation = (a: Country, b: Country) =>
+      a.population - b.population;
 
     return [...countries.value].sort((a, b) => {
       if (sortOption.value === NameAsc) return sortName(a, b);
