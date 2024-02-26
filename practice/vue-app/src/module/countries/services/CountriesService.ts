@@ -15,7 +15,9 @@ class CountriesService {
       .then((Response) => Response.json())
       .then((data) => data);
 
-    return data;
+    return {
+      data: Array.isArray(data) ? data : [],
+    };
   }
 }
 
