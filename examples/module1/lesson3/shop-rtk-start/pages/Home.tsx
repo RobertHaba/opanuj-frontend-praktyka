@@ -1,9 +1,10 @@
-import { useContext } from 'react';
 import Product from '../components/Product';
-import { ProductContext } from '../contexts/ProductContext';
+import { useFetchProductsQuery } from '../services/product';
 
 const Home = () => {
-  const { products } = useContext(ProductContext);
+  const { data: products, isLoading } = useFetchProductsQuery();
+
+  if (isLoading || !products) return <div>Loading...</div>;
 
   return (
     <div>
