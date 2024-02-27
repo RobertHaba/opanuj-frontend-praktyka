@@ -37,7 +37,6 @@ export const cartSlice = createSlice({
     },
 
     decreaseAmount: (state, action: PayloadAction<number>) => {
-      console.log('asd');
       const cartItem = state.items.find((item) => item.id === action.payload);
 
       if (!cartItem) return;
