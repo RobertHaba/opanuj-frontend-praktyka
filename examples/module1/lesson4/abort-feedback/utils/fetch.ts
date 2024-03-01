@@ -14,14 +14,20 @@ export const fetchWithTimeout = async <T = any>(
   timeout: number
 ): Promise<FetchWithTimeoutResponse<T>> => {
   try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(timeout) });
+    const res = await Promise.race([
+      fetch(url),
+      new Promise((_, reject) =>
+        setTimeout(() => reject({ name: APIErrorCode.Timeout }), timeout)
+      ),
+    ]);
+
     return { success: true, data: await res.json() };
-  } catch (err) {
-    if (err?.name === APIErrorCode.Timeout) {
+  } catch (error) {
+    if (error?.name === APIErrorCode.Timeout) {
       return {
         success: false,
         error: {
-          code: err.name,
+          code: APIErrorCode.Timeout,
           message: 'Sorry, there seems to be connectivity issues...',
         },
       };
