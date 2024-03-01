@@ -1,0 +1,3 @@
+export enum APIErrorCode {
+  CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT',
+}
