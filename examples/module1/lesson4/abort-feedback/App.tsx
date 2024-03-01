@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchWithTimeout } from './utils/fetch';
-import { APIErrorCode } from './types/service/APIErrorCode';
 import UserService from './services/UserService';
-
-interface User {
-  id: number;
-  name: string;
-}
+import { User } from './types/User';
 
 const App = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -16,7 +10,7 @@ const App = () => {
 
     const { success, error, data } = await UserService.getUsers();
 
-    if (success) setUsers(data?.users);
+    if (success) setUsers(data?.users || []);
     else if (error?.message) setErrorMessage(error.message);
   };
 

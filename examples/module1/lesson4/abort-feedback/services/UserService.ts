@@ -1,3 +1,4 @@
+import { User } from '../types/User';
 import { fetchWithTimeout } from '../utils/fetch';
 
 class UserService {
@@ -5,13 +6,12 @@ class UserService {
 
   async getUsers(): Promise<{
     success: boolean;
-    data?: { users: any };
+    data?: { users: User[] };
     error?: any;
   }> {
-    return await fetchWithTimeout(UserService.URL, 5000)
-      .then((res) => res.json())
-      .then(({ users }) => ({ success: true, data: { users } }))
-      .catch((error) => ({ success: false, error }));
+    return await fetchWithTimeout<{ users: [] }>(UserService.URL, 5000)
+      .then((result) => result)
+      .catch((error) => error);
   }
 }
 

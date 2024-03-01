@@ -1,3 +1,4 @@
 export enum APIErrorCode {
-  CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT',
+  Timeout = 'TimeoutError',
+  Unknown = 'Unknown',
 }
