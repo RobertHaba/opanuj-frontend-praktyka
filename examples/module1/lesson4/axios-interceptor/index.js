@@ -1,15 +1,4 @@
-import axios from 'axios';
-
-// Add a request interceptor
-axios.interceptors.request.use(function (config) {
-  return config;
-});
-
-// Add a response interceptor
-axios.interceptors.response.use(function (response) {
-  // Do something with response data
-  return response;
-});
+import axios from './lib/axios';
 
 const {
   data: { articles },
