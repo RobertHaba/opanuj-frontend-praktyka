@@ -23,4 +23,4 @@ axios.interceptors.response.use(function (response: CustomAxiosResponse) {
   return response;
 });
 
-export default axios;
+export const customAxios = axios;
