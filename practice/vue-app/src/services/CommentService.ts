@@ -8,7 +8,7 @@ class CommentService{
       .then((res: Response) => res.json())
       .then((res) => res?.comments);
 
-    return res?.length ?  res as Comment[] : [];
+    return res as Comment[];
   }
 
   async add(comment: Comment){
