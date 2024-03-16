@@ -1,28 +1,36 @@
 <script setup lang="ts">
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { Comment } from '../../types/Comment';
-import { useComments } from '../../stores/comment';
 import { inject, ref } from 'vue';
 import { userNameKey } from '../../pages/ListPage.vue';
 import CommentService from '../../services/CommentService';
 
+const queryClient = useQueryClient();
+
 defineProps<{ loading?: boolean }>();
 
-const { addComment, removeComment } = useComments();
-
-const { isPending, mutate } = useMutation({
+const { isPending, isError, mutate } = useMutation({
   mutationFn: CommentService.add,
-  onMutate: (data) => {
-    addComment(data);
+  onSuccess: (_, variables) => {
+    // queryClient.invalidateQueries({ queryKey: ['comments'] }); - disabled: CommentService work as simulation without store the added data
+    queryClient.setQueryData(['comments'], (old: Comment[]) => [
+      variables,
+      ...old,
+    ]);
+    resetForm();
   },
-  onError: (_, data) => removeComment(data.id),
+  onError: (_, variables) => {
+    queryClient.setQueryData(['comments'], (old: Comment[]) =>
+      old.filter((todo) => todo.id !== variables.id)
+    );
+  },
+  mutationKey: ['addComment'],
   retry: 2,
 });
 
 const userName = inject(userNameKey);
 
 const initialComment: Partial<Comment> = {
-  id: +new Date(),
   author: userName,
   text: '',
   rating: undefined as number | undefined,
@@ -31,8 +39,10 @@ const initialComment: Partial<Comment> = {
 const comment = ref({ ...initialComment } as Comment);
 
 function handleSubmit() {
-  mutate({ ...comment.value });
-  resetForm();
+  mutate({
+    ...comment.value,
+    id: +new Date(),
+  });
 }
 
 function resetForm() {
@@ -47,6 +57,10 @@ function resetForm() {
     :class="{ 'opacity-40 animate-pulse': isPending || loading }"
     :inert="isPending || loading"
   >
+    <div v-if="isError" class="bg-red-700 p-4 text-sm rounded-lg" role="alert">
+      An error occurred while adding a comment. Please try again.
+    </div>
+
     <label>
       Your comment
       <textarea

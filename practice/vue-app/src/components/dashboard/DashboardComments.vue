@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-import { useComments } from '../../stores/comment';
+import { useMutationState, useQuery } from '@tanstack/vue-query';
 import DashboardCommentForm from './DashboardCommentForm.vue';
 import DashboardComment from './DashboardComment.vue';
 import DashboardSection from './DashboardSection.vue';
 import ASkeleton from '../ui/ASkeleton.vue';
 import CommentService from '../../services/CommentService';
+import { Comment } from '../../types/Comment';
 
-const { setComments, comments } = useComments();
-
-const { isPending } = useQuery({
+const { isPending, data: comments } = useQuery({
   queryKey: ['comments'],
-  queryFn: async () => {
-    const res = await CommentService.fetch();
+  queryFn: CommentService.fetch,
+});
 
-    setComments(res);
-    return res;
-  },
+const optimisticComments = useMutationState<Comment>({
+  filters: { mutationKey: ['addComment'], status: 'pending' },
+  select: (mutation) => mutation.state.variables as Comment,
 });
 </script>
 
@@ -25,7 +23,14 @@ const { isPending } = useQuery({
     <ul class="flex gap-2 flex-col overflow-y-auto h-72">
       <ASkeleton v-if="isPending" :repeat="5" />
 
-      <template v-else-if="comments.length">
+      <template v-else-if="comments?.length">
+        <li
+          class="opacity-40 animate-pulse"
+          v-for="comment in optimisticComments"
+          :key="comment.id"
+        >
+          <DashboardComment v-bind="comment" />
+        </li>
         <li v-for="comment in comments" :key="comment.id">
           <DashboardComment v-bind="comment" />
         </li>
