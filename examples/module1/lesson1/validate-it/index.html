@@ -8,30 +8,31 @@
   </head>
   <body class="bg-gray-100 p-4">
     <div class="max-w-4xl mx-auto">
-      <div class="flex flex-col">
+      <form onsubmit="event.preventDefault()" class="flex flex-col">
         <input
           class="rounded-md p-4 shadow-lg"
-          type="text"
-          id="input"
+          type="number"
+          id="input-quantity"
           placeholder="Enter a number between 0 and 100"
         />
         <div class="grid grid-cols-2 gap-x-2">
           <button
             class="rounded-md text-lg bg-blue-200 hover:bg-blue-800 hover:text-white p-4 mt-4"
-            id="button"
+            id="button-validate"
           >
             Validate It!
           </button>
           <button
+            type="reset"
             class="rounded-md text-lg bg-red-200 hover:bg-red-800 hover:text-white p-4 mt-4"
-            id="button2"
+            id="button-clear"
           >
             Clear!
           </button>
         </div>
         <div class="text-lg mt-4" id="result"></div>
-      </div>
+      </form>
     </div>
-    <script type="module" src="./index.js"></script>
+    <script type="module" src="./index.ts"></script>
   </body>
 </html>
