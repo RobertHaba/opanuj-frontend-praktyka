@@ -1,58 +1,73 @@
-import React, { useState } from 'react';
-import { f1, f2, f3, f4 } from './functions';
+import { useState } from 'react';
+import BaseButton from './components/ui/button/BaseButton';
+import BaseInputNumber from './components/ui/form/input/BaseInputNumber';
+import {
+  CalculationFn,
+  add,
+  divide,
+  multiply,
+  subtract,
+} from './utils/calc/calculation';
+import { canDivide, hasValue, ValidationRule } from './utils/calc/rules';
 
 const App = () => {
-  const [numA, setNumA] = useState<number>(0);
-  const [numB, setNumB] = useState<number>(0);
-  const [numC, setNumC] = useState<number | string>(0);
+  const [firstValue, setFirstValue] = useState<number | string>(0);
+  const [secondValue, setSecondValue] = useState<number | string>(0);
 
-  const doWork = (func: (a: number, b: number) => number) => {
-    setNumC(func(numA, numB));
+  const [result, setResult] = useState<number>(0);
+
+  const [validationErrorMsg, setValidationErrorMsg] = useState<string>('');
+
+  const config = [
+    { label: '+', operationFn: add, rules: [hasValue] },
+    { label: '-', operationFn: subtract, rules: [hasValue] },
+    { label: '*', operationFn: multiply, rules: [hasValue] },
+    { label: '/', operationFn: divide, rules: [hasValue, canDivide] },
+  ];
+
+  const handleCalc = (operation: CalculationFn, rules: ValidationRule[]) => {
+    const foundInvalid = rules.find(
+      (rule) => !rule.validate(firstValue, secondValue)
+    );
+
+    if (foundInvalid) {
+      setValidationErrorMsg(foundInvalid.errorMessage);
+      return;
+    }
+
+    if (validationErrorMsg) setValidationErrorMsg('');
+
+    const result = operation(parseFloat(firstValue), parseFloat(secondValue));
+    setResult(result);
   };
 
   return (
     <div>
       <div className="grid grid-cols-2 gap-x-4">
-        <input
-          type="number"
-          className="rounded-md shadow-md p-4"
-          value={numA}
-          onChange={(e) => setNumA(parseFloat(e.target.value))}
+        <BaseInputNumber
+          value={firstValue}
+          onInput={(value) => setFirstValue(value)}
         />
-        <input
-          type="number"
-          className="rounded-md shadow-md p-4"
-          value={numB}
-          onChange={(e) => setNumB(parseFloat(e.target.value))}
+
+        <BaseInputNumber
+          value={secondValue}
+          onInput={(value) => setSecondValue(value)}
         />
       </div>
+
       <div className="grid grid-cols-4 gap-x-4 my-4">
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f1)}
-        >
-          +
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f2)}
-        >
-          -
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f3)}
-        >
-          *
-        </button>
-        <button
-          className="bg-blue-200 px-2 py-4 text-lg hover:bg-blue-500 hover:text-white rounded-md"
-          onClick={() => doWork(f4)}
-        >
-          /
-        </button>
+        {config.map(({ label, operationFn, rules }, idx) => (
+          <BaseButton key={idx} onClick={() => handleCalc(operationFn, rules)}>
+            {label}
+          </BaseButton>
+        ))}
       </div>
-      <div>Result: {numC}</div>
+
+      {validationErrorMsg ? (
+        <div className="text-red-500">{validationErrorMsg}</div>
+      ) : (
+        <div>Result: {result}</div>
+      )}
     </div>
   );
 };
