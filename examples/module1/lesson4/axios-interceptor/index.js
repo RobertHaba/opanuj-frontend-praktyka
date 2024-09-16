@@ -1,18 +1,13 @@
-import axios from 'axios';
+import { customAxios } from './lib/axios';
+import { proxyFetch } from './utils/fetch';
 
-// Add a request interceptor
-axios.interceptors.request.use(function (config) {
-  return config;
-});
+console.log('Proxy Fetch - pending');
+const res = await proxyFetch('/api/data/articles?timeout=1000');
+console.log(res);
 
-// Add a response interceptor
-axios.interceptors.response.use(function (response) {
-  // Do something with response data
-  return response;
-});
-
+console.log('Custom Axios - pending');
 const {
   data: { articles },
-} = await axios.get('/api/data/articles?timeout=3000');
+} = await customAxios.get('/api/data/articles?timeout=3000');
 
 document.querySelector('#data').innerHTML = articles[0].content;
